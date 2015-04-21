@@ -16,20 +16,20 @@ def main(search_term):
     CONSUMER_SECRET = 'oJG1BGj5HJ0wGROCfDIArW63KUqhbsju42XNZ9PRm6T7Hl1tgz'
     OAUTH_TOKEN = '3047116915-gixoMSHYzFiYUw72eE9smGDJMoefjV3v80Hzk3n'
     OAUTH_TOKEN_SECRET = 'ho043sAlnTaVkEOmpqdWuA6B04vRA1XhLheFOkSailGgH'
-    ALCHEMY_KEY = '6c01d5fe6c4a0bab0cf9fc15b99a21ec22bb2ef9' 
+    ALCHEMY_KEY = '00838c3f4fd0174f2435f254a03e2c60370f32d0' 
 
     # Get the Twitter OAuth
     auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
     twitter_api = twitter.Twitter(auth=auth)
 
     # Pull Tweets down from the Twitter API
-    found_tweets = search(twitter_api, search_term, 5)
+    found_tweets = search(twitter_api, search_term, 50)
 
     # Enrich the body of the Tweets using AlchemyAPI
     enriched_tweets = enrich(ALCHEMY_KEY, found_tweets, sentiment_target = search_term)
 
     # Print some interesting results to the screen
-    results = get_results(enriched_tweets)
+    results = get_results(enriched_tweets,search_term)
 
     return results
 
@@ -42,8 +42,8 @@ def oauth_login(): #Establishes connection for the use of twitter api #*****
     return twitter_api
 
 
-def search(twitter_api, q, max_results=200, **kw): 
-    search_results = twitter_api.search.tweets(q=q, count=5, **kw)
+def search(twitter_api, q, max_results=100, **kw): 
+    search_results = twitter_api.search.tweets(q=q, count=75, **kw)
     
     statuses = search_results['statuses']
     max_results = min(1000, max_results)
@@ -123,14 +123,7 @@ def get_text_sentiment(apikey, tweet, target, output):
         print e
     return
 
-def get_results(tweets):
-    results = ""
-
-    results += '<br>'
-    results += '#######<br>'
-    results += '# Stats #<br>'
-    results += '#######<br>'
-    results += ''   
+def get_results(tweets,q):
 
     num_positive_tweets = 0
     num_negative_tweets = 0
@@ -155,12 +148,24 @@ def get_results(tweets):
                                                                      num_neutral_tweets)
         sys.exit()
     '''
+
+    results = []
+
     if num_tweets != 0:
-        results += "SENTIMENT BREAKDOWN<br>"
-        results += "Number of positive tweets: " + str(num_positive_tweets) + " (" + str(100*float(num_positive_tweets) / num_tweets) + ")<br>"
-        results += "Number of negative tweets: " + str(num_negative_tweets) + " (" + str(100*float(num_negative_tweets) / num_tweets) + ")<br>"
-        results += "Number  of neutral tweets: " + str(num_neutral_tweets) + " (" + str(100*float(num_neutral_tweets) / num_tweets) + ")<br>"
-        results += "<br>"
+        results.append("Number of positive tweets: " + str(num_positive_tweets) + " (" + str(100*float(num_positive_tweets) / num_tweets) + "%)")
+        results.append("Number of negative tweets: " + str(num_negative_tweets) + " (" + str(100*float(num_negative_tweets) / num_tweets) + "%)")
+        results.append("Number  of neutral tweets: " + str(num_neutral_tweets) + " (" + str(100*float(num_neutral_tweets) / num_tweets) + "%)")
+        
+        linkStr = ""
+        linkStr += "http://www.sentiment140.com/search?query="
+        if " " in q:
+            w,t = q.split(" ")
+            linkStr += w + "+" + t
+        else:
+            linkStr += q
+        linkStr += "&hl=en"
+        results.append(linkStr)
+
     return results
 
 if __name__ == "__main__":
