@@ -1,3 +1,3 @@
 # dgd
-CIS400 Twitter Sentiment Analysis Platform
+CIS400 Twitter Sentiment Analysis Platform<br>
 By: Daniel, Grant, Derrick
