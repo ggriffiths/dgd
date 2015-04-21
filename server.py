@@ -1,8 +1,6 @@
 #!flask/bin/python
 from flask import Flask, render_template
-import recipe
 import miner
-import twitter
 
 app = Flask(__name__, static_url_path='/static')
 
