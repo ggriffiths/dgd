@@ -8,10 +8,10 @@ app = Flask(__name__, static_url_path='/static')
 def index():
     return render_template('index.html')
 
-@app.route('/updateResults', methods=['POST'])
+@app.route('/getResults', methods=['POST'])
 def update():
 	term = request.form['searchTerm']
-	return miner.main("Test")
+	return "Search term: " + str(term) + "<br><br>" +miner.main(term)
 
 if __name__ == '__main__':
     app.run(debug=True)

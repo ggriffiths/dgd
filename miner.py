@@ -9,7 +9,6 @@ import json
 import urllib
 import urllib2
 import base64
-import pymongo
 from multiprocessing import Pool, Lock, Queue, Manager
 
 def main(search_term):
@@ -17,25 +16,22 @@ def main(search_term):
     CONSUMER_SECRET = 'oJG1BGj5HJ0wGROCfDIArW63KUqhbsju42XNZ9PRm6T7Hl1tgz'
     OAUTH_TOKEN = '3047116915-gixoMSHYzFiYUw72eE9smGDJMoefjV3v80Hzk3n'
     OAUTH_TOKEN_SECRET = 'ho043sAlnTaVkEOmpqdWuA6B04vRA1XhLheFOkSailGgH'
-    ALCHEMY_KEY = '49d68b06acb5f1b49978b893fb138125d50bfb74' 
+    ALCHEMY_KEY = '6c01d5fe6c4a0bab0cf9fc15b99a21ec22bb2ef9' 
 
     # Get the Twitter OAuth
     auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
     twitter_api = twitter.Twitter(auth=auth)
 
     # Pull Tweets down from the Twitter API
-    found_tweets = search(twitter_api, search_term, 50)
+    found_tweets = search(twitter_api, search_term, 5)
 
     # Enrich the body of the Tweets using AlchemyAPI
     enriched_tweets = enrich(ALCHEMY_KEY, found_tweets, sentiment_target = search_term)
 
-    # Store data in MongoDB
-    store(enriched_tweets)
-
     # Print some interesting results to the screen
-    print_results()
+    results = get_results(enriched_tweets)
 
-    return
+    return results
 
 def oauth_login(): #Establishes connection for the use of twitter api #*****
     
@@ -47,7 +43,7 @@ def oauth_login(): #Establishes connection for the use of twitter api #*****
 
 
 def search(twitter_api, q, max_results=200, **kw): 
-    search_results = twitter_api.search.tweets(q=q, count=50, **kw)
+    search_results = twitter_api.search.tweets(q=q, count=5, **kw)
     
     statuses = search_results['statuses']
     max_results = min(1000, max_results)
@@ -66,7 +62,6 @@ def search(twitter_api, q, max_results=200, **kw):
         result = []
         for tweet in statuses:
             result.append([tweet['text'] , tweet['user']['location']])
-            #print tweet
             #print 'ID: ', tweet['id_str'], '\n', 'Location:', tweet['user']['location'], '\nStart of tweet: \n', tweet['text'], '\nEnd of tweet. \n\n\n'
 
         if len(statuses) > max_results: 
@@ -125,51 +120,33 @@ def get_text_sentiment(apikey, tweet, target, output):
         output.put(tweet)
 
     except Exception as e:
-        print "D'oh! There was an error enriching Tweet (ID %s)" % tweet['id']
-        print "Error:", e
-        print "Request:", results.url
-        print "Response:", response
-
+        print e
     return
 
-def store(tweets):
-    # Instantiate your MongoDB client
-    mongo_client = pymongo.MongoClient()
-    
-    # Retrieve (or create, if it doesn't exist) the twitter_db database from Mongo
-    db = mongo_client.twitter_db
-   
-    db_tweets = db.tweets
+def get_results(tweets):
+    results = ""
+
+    results += '<br>'
+    results += '#######<br>'
+    results += '# Stats #<br>'
+    results += '#######<br>'
+    results += ''   
+
+    num_positive_tweets = 0
+    num_negative_tweets = 0
+    num_neutral_tweets = 0
+    num_tweets = len(tweets)
+    tweet = {}
 
     for tweet in tweets:
-        db_id = db_tweets.insert(tweet)
- 
-    db_count = db_tweets.count()
+        if tweet['sentiment'] == 'positive':
+            num_positive_tweets += 1
+        elif tweet['sentiment'] == 'negative':
+            num_negative_tweets += 1
+        else:
+            num_neutral_tweets += 1
 
-    return
-
-def print_results():
-
-    print ''
-    print '###############'
-    print '#    Stats    #'
-    print '###############'
-    print ''   
-    
-    # Set URI
-    uri = "mongodb://admin:admin@ds031541.mongolab.com:31541/twitter_db"
-
-    # Instantiate your MongoDB client
-    db = pymongo.MongoClient()
-    tweets = db.tweets
-
-    
-
-    num_positive_tweets = tweets.find({"sentiment" : "positive"}).count()
-    num_negative_tweets = tweets.find({"sentiment" : "negative"}).count()
-    num_neutral_tweets = tweets.find({"sentiment" : "neutral"}).count()
-    num_tweets = tweets.find().count()
-
+    '''
     if num_tweets != sum((num_positive_tweets, num_negative_tweets, num_neutral_tweets)):
         print "Counting problem!"
         print "Number of tweets (%d) doesn't add up (%d, %d, %d)" % (num_tweets, 
@@ -177,14 +154,14 @@ def print_results():
                                                                      num_negative_tweets, 
                                                                      num_neutral_tweets)
         sys.exit()
+    '''
     if num_tweets != 0:
-        print "SENTIMENT BREAKDOWN"
-        print "Number (%%) of positive tweets: %d (%.2f%%)" % (num_positive_tweets, 100*float(num_positive_tweets) / num_tweets)
-        print "Number (%%) of negative tweets: %d (%.2f%%)" % (num_negative_tweets, 100*float(num_negative_tweets) / num_tweets)
-        print "Number (%%) of neutral tweets: %d (%.2f%%)" % (num_neutral_tweets, 100*float(num_neutral_tweets) / num_tweets)
-        print ""
-
-    return
+        results += "SENTIMENT BREAKDOWN<br>"
+        results += "Number of positive tweets: " + str(num_positive_tweets) + " (" + str(100*float(num_positive_tweets) / num_tweets) + ")<br>"
+        results += "Number of negative tweets: " + str(num_negative_tweets) + " (" + str(100*float(num_negative_tweets) / num_tweets) + ")<br>"
+        results += "Number  of neutral tweets: " + str(num_neutral_tweets) + " (" + str(100*float(num_neutral_tweets) / num_tweets) + ")<br>"
+        results += "<br>"
+    return results
 
 if __name__ == "__main__":
 
