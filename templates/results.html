@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<!--
+	Twenty by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>DGD</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.dropotron.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.scrolly.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.scrollgress.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/skel.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/skel-layers.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/init.js') }}"></script>
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/skel.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style-noscript.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/style-wide.css') }}" />
+	</head>
+	<body class="index">	
+		<!-- Main -->
+			<article id="main">
+					<section class="wrapper style3 container special">
+						<form action="/getResults" method="Post">
+							<div class="row">
+								<div class="12u 12u(narrower)">
+									<section>
+										<a href="#" class="image featured"></a>
+										<header>
+											<h3>Your results:</h3>
+										</header>
+										<p>Search term: {{term}}</p><br>
+										<p>
+											{{results[0]}}<br>
+											{{results[1]}}<br>
+											{{results[2]}}<br><br>
+											<a href='{{results[3]}}'>Compare To Sentiment 140 Results</a>
+										</p>
+									</section>
+								</div>
+							</div>
+						</form>
+					</section>
+
+			</article>
+
+		<!-- Footer -->
+			<footer id="footer">
+
+				<ul class="copyright">
+					<li>&copy; DGD</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+
+			</footer>
+
+	</body>
+</html>
