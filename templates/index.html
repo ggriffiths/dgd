@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Twenty by HTML5 UP</title>
+		<title>DGD</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -63,40 +63,30 @@
 		<!-- Main -->
 			<article id="main">
 					<section class="wrapper style3 container special">
-						<header class="major">
-							<h2>The <strong>DGD</strong> Platform </h2>
-						</header>
-						<div class="row">
-							<div class="12u 12u(narrower)">
-
-								<section>
-									<a href="#" class="image featured"></a>
-									<header>
-										<h3>Search Term</h3>
-									</header>
-									<p>Search term explanation Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit.</p>
-								</section>
-
+						<form action="/updateResults" method="Post">
+							<div class="row">
+								<div class="12u 12u(narrower)">
+									<section>
+										<a href="#" class="image featured"></a>
+										<header>
+											<h3>Search Term:</h3>
+										</header>
+										<input type='text' name="searchTerm">
+									</section>
+								</div>
 							</div>
-
-						</div>
-	
-						<footer class="major">
-							<ul class="buttons">
-								<li><a href="#" class="button">Get Search Results</a></li>
-							</ul>
-						</footer>
-
-						<div class="row">
-							<div class="12u 12u(narrower)">
-								<section>
-									<a href="#" class="image featured"></a>
-
-									<p>Search Results Sed tristique purus vitae volutpat commodo suscipit amet sed nibh. Proin a ullamcorper sed blandit.</p>
-								</section>
-							</div>
-						</div>
-
+		
+							<footer class="major">
+								<ul class="buttons">
+									<input type="submit" value="Search" />
+								</ul>
+								<!--p>
+									<strong>Number of positive tweets:</strong> {{x}} <br>
+									<strong>Number of negative tweets:</strong> {{y}} <br>
+									<strong>Number of neutral tweets:</strong> {{z}} <br>
+								</p-->
+							</footer>
+						</form>
 					</section>
 
 			</article>

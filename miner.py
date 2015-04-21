@@ -66,7 +66,8 @@ def search(twitter_api, q, max_results=200, **kw):
         result = []
         for tweet in statuses:
             result.append([tweet['text'] , tweet['user']['location']])
-            print 'ID: ', tweet['id_str'], '\n', 'Location:', tweet['user']['location'], '\nStart of tweet: \n', tweet['text'], '\nEnd of tweet. \n\n\n'
+            #print tweet
+            #print 'ID: ', tweet['id_str'], '\n', 'Location:', tweet['user']['location'], '\nStart of tweet: \n', tweet['text'], '\nEnd of tweet. \n\n\n'
 
         if len(statuses) > max_results: 
             break
@@ -155,8 +156,14 @@ def print_results():
     print '###############'
     print ''   
     
-    db = pymongo.MongoClient().twitter_db
+    # Set URI
+    uri = "mongodb://admin:admin@ds031541.mongolab.com:31541/twitter_db"
+
+    # Instantiate your MongoDB client
+    db = pymongo.MongoClient()
     tweets = db.tweets
+
+    
 
     num_positive_tweets = tweets.find({"sentiment" : "positive"}).count()
     num_negative_tweets = tweets.find({"sentiment" : "negative"}).count()
