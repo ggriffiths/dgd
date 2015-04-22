@@ -30,11 +30,11 @@
 					<section class="wrapper style3 container special">
 						<form action="/getResults" method="Post">
 							<div class="row">
-								<div class="12u 12u(narrower)">
+								<div class="6u 12u(narrower)">
 									<section>
 										<a href="#" class="image featured"></a>
 										<header>
-											<h3>Your results:</h3>
+											<h3><i class="fa fa-check"></i> English results:</h3>
 										</header>
 										<p>Search term: {{term}}</p><br>
 										<p>
@@ -42,6 +42,22 @@
 											{{results[1]}}<br>
 											{{results[2]}}<br><br>
 											<a href='{{results[3]}}'>Compare To Sentiment 140 Results</a>
+										</p>
+									</section>
+								</div>
+
+								<div class="6u 12u(narrower)">
+									<section>
+										<a href="#" class="image featured"></a>
+										<header>
+											<h3><i class="fa fa-check"></i> {{language}} results:</h3>
+										</header>
+										<p>Search term: {{translated_term}}</p><br>
+										<p>
+											{{translated_results[0]}}<br>
+											{{translated_results[1]}}<br>
+											{{translated_results[2]}}<br><br>
+											<a href='{{translated_results[3]}}'>Compare To Sentiment 140 Results</a>
 										</p>
 									</section>
 								</div>

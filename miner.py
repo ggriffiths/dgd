@@ -16,7 +16,7 @@ def main(search_term):
     CONSUMER_SECRET = 'oJG1BGj5HJ0wGROCfDIArW63KUqhbsju42XNZ9PRm6T7Hl1tgz'
     OAUTH_TOKEN = '3047116915-gixoMSHYzFiYUw72eE9smGDJMoefjV3v80Hzk3n'
     OAUTH_TOKEN_SECRET = 'ho043sAlnTaVkEOmpqdWuA6B04vRA1XhLheFOkSailGgH'
-    ALCHEMY_KEY = '00838c3f4fd0174f2435f254a03e2c60370f32d0' 
+    ALCHEMY_KEY = '4f44a8d461c65fadde9d33696b0d3a2587cfa8c0' 
 
     # Get the Twitter OAuth
     auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
@@ -97,7 +97,7 @@ def get_text_sentiment(apikey, tweet, target, output):
         "text"   : tweet['text'].encode('utf-8'),
         "outputMode" : "json",
         "showSourceText" : 1
-        }
+    }
 
     try:
 
