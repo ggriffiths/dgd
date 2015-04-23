@@ -17,6 +17,9 @@ def main(search_term):
     OAUTH_TOKEN = '3047116915-gixoMSHYzFiYUw72eE9smGDJMoefjV3v80Hzk3n'
     OAUTH_TOKEN_SECRET = 'ho043sAlnTaVkEOmpqdWuA6B04vRA1XhLheFOkSailGgH'
     ALCHEMY_KEY = '4f44a8d461c65fadde9d33696b0d3a2587cfa8c0' 
+    #ALCHEMY_KEY = '7cba367c8d8de9f452f7fe43aef167d37fbc9192' 
+    #ALCHEMY_KEY = '6c01d5fe6c4a0bab0cf9fc15b99a21ec22bb2ef9'
+     
 
     # Get the Twitter OAuth
     auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
