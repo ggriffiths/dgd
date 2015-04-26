@@ -1,8 +1,8 @@
-# dgd
-CIS400 Twitter Sentiment Analysis Platform<br>
+# DGD - Data Gathering Determiner 
+CIS400 Twitter multilingual sentiment analysis platform<br>
 By: Daniel, Grant, Derrick
 
-# Installation instructions
+## Installation instructions
 <b>1. Get source code:</b> git clone https://www.github.com/ggriffiths/dgd<br>
 <b>2. Get python twitter api:</b> easy_install twitter OR pip install twitter<br>
 <b>3. Get requests api</b> easy_install requests<br>
